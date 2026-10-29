@@ -12,7 +12,7 @@ El proyecto integra un ESP32 con HC-SR04 y SG90, IoT MQTT Panel y un servidor MC
 | --- | --- |
 | Josue Junior Camacho Canaviri | Integración del ESP32: sensor HC-SR04, controlador del SG90, lógica principal y proyecto PlatformIO. |
 | Lucas Santiago Ancieta Rodriguez | Integración de WiFi/MQTT, HiveMQ, aplicación móvil y documentación general. |
-| Pablo Raya| Integración del servidor MCP en Python con Claude Desktop y comunicación MQTT. |
+| Pablo Raya Pommier| Integración del servidor MCP en Python con Claude Desktop y comunicación MQTT. |
 
 ```mermaid
 flowchart LR
