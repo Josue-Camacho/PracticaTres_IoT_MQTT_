@@ -3,3 +3,22 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
+
+# Configuración privada
+include/config.local.h
+mcp-server/mqtt_config.json
+mcp-server/.env
+mcp-server/.env.*
+!mcp-server/.env.example
+
+# Archivos generados por Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Archivos temporales de editores
+*.tmp
+*.swp
+*~
