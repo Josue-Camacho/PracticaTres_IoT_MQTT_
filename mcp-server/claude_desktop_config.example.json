@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "esp32-mqtt": {
+      "command": "C:\\ruta\\MQTT_Proyecto\\mcp-server\\.venv\\Scripts\\python.exe",
+      "args": ["C:\\ruta\\MQTT_Proyecto\\mcp-server\\server.py"]
+    }
+  }
+}

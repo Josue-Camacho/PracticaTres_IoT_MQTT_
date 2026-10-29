@@ -1,0 +1,6 @@
+{
+  "host": "broker.hivemq.com",
+  "port": 1883,
+  "distance_topic": "sis234/grupo3/distancia/cm",
+  "servo_topic": "sis234/grupo3/servo/cmd"
+}
