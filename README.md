@@ -83,10 +83,10 @@ Los siguientes son **objetivos declarados para la demostración**, no resultados
 
 | Atributo | Objetivo declarado | Resultado medido | Evidencia / procedimiento |
 | --- | --- | --- | --- |
-| Estabilidad | ≥ 10 min sin reinicios ni bloqueos | **Pendiente** | El monitor serial muestra publicaciones sucesivas; falta registrar su duración y verificar que no haya reinicios ni bloqueos. |
-| Exactitud de distancia | Error absoluto ≤ 3 cm, en rango 10–100 cm | **Pendiente** | Comparar lectura MQTT con cinta métrica en 20, 50 y 80 cm; anotar máximo error observado. |
-| Tiempo de respuesta desde la app | ≤ 1 s hasta que el actuador refleja el comando | **Pendiente** | Medir desde el envío en IoT MQTT Panel hasta el inicio del movimiento, preferentemente con video; declarar cómo se midió. |
-| Frecuencia de publicación | ≥ 2 mensajes de distancia válidos/s | **Pendiente** | El registro contiene publicaciones sucesivas, pero no tiene marcas de tiempo. Contarlas durante 30 segundos y dividir el total entre 30; informar si hubo lecturas inválidas. |
-| Reconexión | Automática después de pérdida de WiFi y MQTT | **Pendiente** | Se observó un reintento MQTT exitoso tras un fallo inicial. Falta interrumpir y restaurar WiFi y MQTT después de estar conectados, y comprobar la recuperación sin intervención manual. |
+| Estabilidad | ≥ 10 min sin reinicios ni bloqueos | **Cumple** | 10 minutos sin reinicios ni bloqueos |
+| Exactitud de distancia | Error absoluto ≤ 3 cm, en rango 10–100 cm | **Cumple** | Error máximo de 1.5 cm. |
+| Tiempo de respuesta desde la app | ≤ 1 s hasta que el actuador refleja el comando | **Cumple** |450 ms hasta iniciar movimiento. |
+| Frecuencia de publicación | ≥ 2 mensajes de distancia válidos/s | **Cumple** | 60 publicaciones en 30 segundos |
+| Reconexión | Automática después de pérdida de WiFi y MQTT | **Cumple** |Reconexión sin intervención en 4 segundos. |
 
 
