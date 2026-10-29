@@ -62,3 +62,4 @@ Para la demostración se proponen estos valores, aún sin medir: operación cont
 3. Con otro cliente MQTT conectado a `broker.hivemq.com:1883`, suscríbete a `sis234/grupo3/distancia/cm` y acerca un objeto al sensor dentro del rango de trabajo. Comprueba los valores y el monitor serial.
 4. Envía un entero permitido, por ejemplo `90`, a `sis234/grupo3/servo/cmd` con QoS 0 y retain desactivado. Comprueba la recepción y el movimiento.
 5. Interrumpe y restablece la conexión para comprobar la reconexión y la reanudación de las publicaciones.
+
