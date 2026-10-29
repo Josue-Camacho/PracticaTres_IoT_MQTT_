@@ -89,13 +89,4 @@ Los siguientes son **objetivos declarados para la demostración**, no resultados
 | Frecuencia de publicación | ≥ 2 mensajes de distancia válidos/s | **Pendiente** | El registro contiene publicaciones sucesivas, pero no tiene marcas de tiempo. Contarlas durante 30 segundos y dividir el total entre 30; informar si hubo lecturas inválidas. |
 | Reconexión | Automática después de pérdida de WiFi y MQTT | **Pendiente** | Se observó un reintento MQTT exitoso tras un fallo inicial. Falta interrumpir y restaurar WiFi y MQTT después de estar conectados, y comprobar la recuperación sin intervención manual. |
 
-**Precisión:** la lógica intenta tomar una medición cada 500 ms, pero esto no demuestra por sí solo 2 publicaciones válidas por segundo. Las mediciones inválidas se descartan. Además, en movimientos posteriores al primero, el servo avanza en pasos de 1° con intervalos mínimos de 20 ms; no confundir el tiempo para empezar a moverse con el tiempo hasta llegar al ángulo objetivo.
-
-**Registro de la demostración:** fecha `29/10/2026`; integrantes participantes y dispositivo de medición: **pendientes de completar**.
-
-1. Verifica la configuración y las conexiones físicas.
-2. En PlatformIO ejecuta **Build**, conecta la placa y ejecuta **Upload**. Abre Serial Monitor a **115200 baudios**.
-3. Con otro cliente MQTT conectado a `broker.hivemq.com:1883`, suscríbete a `sis234/grupo3/distancia/cm` y acerca un objeto al sensor dentro del rango de trabajo. Comprueba los valores y el monitor serial.
-4. Envía un entero permitido, por ejemplo `90`, a `sis234/grupo3/servo/cmd` con QoS 0 y retain desactivado. Comprueba la recepción y el movimiento.
-5. Interrumpe y restablece la conexión para comprobar la reconexión y la reanudación de las publicaciones.
 
