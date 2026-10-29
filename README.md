@@ -79,8 +79,6 @@ En Claude se consultó la distancia mediante `esp32-mqtt` y se obtuvo una lectur
 
 ### Requisitos no funcionales: valores declarados y resultados
 
-Los siguientes son **objetivos declarados para la demostración**, no resultados comprobados todavía. Reemplaza «Pendiente» por datos **realmente medidos**, o declara explícitamente que no se logró verificar alguno.
-
 | Atributo | Objetivo declarado | Resultado medido | Evidencia / procedimiento |
 | --- | --- | --- | --- |
 | Estabilidad | ≥ 10 min sin reinicios ni bloqueos | **Cumple** | 10 minutos sin reinicios ni bloqueos |
