@@ -6,7 +6,13 @@ El firmware implementa RF1, RF2 y RF3: mide distancia con un HC-SR04, la publica
 
 El proyecto integra un ESP32 con HC-SR04 y SG90, IoT MQTT Panel y un servidor MCP para Claude Desktop. El ESP32, la aplicación móvil y el servidor MCP se comunican a través de HiveMQ; Claude Desktop se comunica con el servidor MCP por stdio.
 
-**Integrantes:** pendientes de registrar.
+## Integrantes y responsabilidades
+
+| Integrante | Responsabilidad principal |
+| --- | --- |
+| Josué | Integración del ESP32: sensor HC-SR04, controlador del SG90, lógica principal y proyecto PlatformIO. |
+| Lucas | Integración de WiFi/MQTT, HiveMQ, aplicación móvil y documentación general. |
+| Pablo | Integración del servidor MCP en Python con Claude Desktop y comunicación MQTT. |
 
 ```mermaid
 flowchart LR
