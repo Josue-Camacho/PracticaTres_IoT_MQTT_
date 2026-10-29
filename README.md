@@ -53,7 +53,7 @@ Para instalar el servidor Python y configurar Claude Desktop mediante stdio, sig
 | RF3: recibir comandos para el actuador | Movimiento del SG90 comprobado mediante MQTT.fx. |
 | RF4: visualización gráfica en la app | Gauge de distancia comprobado en IoT MQTT Panel. |
 | RF5: control desde la app | Slider y movimiento del SG90 comprobados. |
-| RF6: consulta y control mediante IA y MCP | Pendiente de prueba integral: Claude inicia el servidor e invocó la consulta con el ESP32 desconectado; faltan una lectura real y el movimiento físico mediante Claude. |
+| RF6: consulta y control mediante IA y MCP | Comprobado: Claude consultó una distancia de 23,3 cm y controló el servo a 0° y 90° mediante el servidor MCP. |
 
 Para la demostración se proponen estos valores, aún sin medir: operación continua durante al menos 10 minutos; error máximo de ±3 cm entre 10 y 100 cm; respuesta del actuador en hasta 1 segundo; dos lecturas válidas por segundo; y reconexión automática WiFi y MQTT. Comprueba respectivamente el funcionamiento sin reinicios durante 10 minutos, compara lecturas con una cinta métrica, mide el tiempo desde el comando hasta el inicio del movimiento, cuenta publicaciones válidas durante un intervalo y desconecta y restablece WiFi y MQTT. Registra los resultados reales y las condiciones de cada medición.
 

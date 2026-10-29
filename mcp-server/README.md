@@ -18,7 +18,7 @@ Claude Desktop
 
 Funcionamiento
 
-Estado de la integración: Claude Desktop reconoce e inicia el servidor y ya invocó consultar_distancia con el ESP32 desconectado. Quedan pendientes la consulta de una lectura real y el movimiento físico mediante Claude; RF6 aún no está verificado de extremo a extremo.
+Estado de la integración: RF6 se comprobó de extremo a extremo con Claude Desktop. Claude consultó una lectura real de 23,3 cm y se probó el control del servo con comandos de 0° y 90° mediante el servidor MCP.
 
     consultar_distancia() devuelve la última distancia válida y su antigüedad. La lectura no está disponible si no se recibió una medición en los últimos tres segundos. Se descartan mensajes retenidos y valores fuera del rango de trabajo del firmware (10–100 cm).
     mover_servo(angulo) acepta un entero de 0 a 180 y publica en sis234/grupo3/servo/cmd con QoS 0 y retain desactivado. La confirmación indica el envío MQTT, no que el servo haya alcanzado la posición.
