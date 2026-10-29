@@ -12,7 +12,8 @@ El proyecto integra un ESP32 con HC-SR04 y SG90, IoT MQTT Panel y un servidor MC
 | --- | --- |
 | Josue Junior Camacho Canaviri | Integración del ESP32: sensor HC-SR04, controlador del SG90, lógica principal y proyecto PlatformIO. |
 | Lucas Santiago Ancieta Rodriguez | Integración de WiFi/MQTT, HiveMQ, aplicación móvil y documentación general. |
-| Pablo Raya Pommier| Integración del servidor MCP en Python con Claude Desktop y comunicación MQTT. |
+| Pablo Raya Pommier | Integración del servidor MCP en Python con Claude Desktop y comunicación MQTT. |
+
 
 ```mermaid
 flowchart LR
@@ -42,13 +43,20 @@ Cada 500 ms se intenta una medición; se rechazan lecturas sin eco o fuera de 10
 
 El comando debe contener entre uno y tres dígitos ASCII, sin espacios, signos ni decimales, y encontrarse dentro de los límites configurados y de 0–180°. Se rechazan comandos retenidos y configuraciones de pulsos o límites inseguros. El servo no se mueve automáticamente al encender. Como se desconoce su posición inicial, el primer comando aplica directamente la posición solicitada; a partir de entonces avanza hacia cada objetivo en pasos de un grado, con un intervalo mínimo de 20 ms. El mensaje de posición solicitada no confirma el movimiento físico.
 
-El firmware reintenta las conexiones WiFi y MQTT y vuelve a suscribirse tras una desconexión. El monitor serial muestra el estado de conexión, las publicaciones, lecturas inválidas y comandos recibidos. Publica comandos con retain desactivado y elimina cualquier comando retenido anteriormente en el broker.
+El firmware reintenta las conexiones WiFi y MQTT y vuelve a suscribirse tras una desconexión. El monitor serial muestra el estado de conexión, las publicaciones, lecturas inválidas y comandos recibidos. Los comandos de la aplicación y del servidor MCP deben publicarse con `retain` desactivado. El firmware **descarta comandos recibidos como retenidos**, pero **no elimina** mensajes retenidos que ya existan en el broker.
 
 ## Prueba
 
 En IoT MQTT Panel configura una conexión MQTT TCP a `broker.hivemq.com`, puerto `1883`, sin usuario ni contraseña, con un identificador de cliente distinto al del ESP32 y al del servidor MCP. Agrega un gauge suscrito a `sis234/grupo3/distancia/cm` y un slider de 0 a 180 que publique valores enteros en `sis234/grupo3/servo/cmd`, con QoS 0 y retain desactivado.
 
-Para instalar el servidor Python y configurar Claude Desktop mediante stdio, sigue [mcp-server/README.md](mcp-server/README.md) y su ejemplo de configuración con rutas absolutas. El servidor ofrece `consultar_distancia()` y `mover_servo(angulo)`; publicar un comando no confirma el movimiento físico.
+Para instalar el servidor Python y configurar Claude Desktop mediante stdio, sigue [mcp-server/README.md](mcp-server/README.md) y su ejemplo de configuración con rutas absolutas. Publicar un comando no confirma el movimiento físico.
+
+### Herramientas MCP expuestas
+
+| Herramienta | Parámetros | Propósito |
+| --- | --- | --- |
+| `consultar_distancia()` | Ninguno | Devuelve la última distancia válida y su antigüedad. Si no hay una lectura reciente (máximo 3 segundos), informa que no está disponible. |
+| `mover_servo(angulo)` | `angulo`: entero entre 0 y 180 | Publica el ángulo solicitado por MQTT en el tópico del servomotor; confirma el envío, no el movimiento físico. |
 
 ### Requisitos y estado de la demostración
 
@@ -61,7 +69,21 @@ Para instalar el servidor Python y configurar Claude Desktop mediante stdio, sig
 | RF5: control desde la app | Slider y movimiento del SG90 comprobados. |
 | RF6: consulta y control mediante IA y MCP | Comprobado: Claude consultó una distancia de 23,3 cm y controló el servo a 0° y 90° mediante el servidor MCP. |
 
-Para la demostración se proponen estos valores, aún sin medir: operación continua durante al menos 10 minutos; error máximo de ±3 cm entre 10 y 100 cm; respuesta del actuador en hasta 1 segundo; dos lecturas válidas por segundo; y reconexión automática WiFi y MQTT. Comprueba respectivamente el funcionamiento sin reinicios durante 10 minutos, compara lecturas con una cinta métrica, mide el tiempo desde el comando hasta el inicio del movimiento, cuenta publicaciones válidas durante un intervalo y desconecta y restablece WiFi y MQTT. Registra los resultados reales y las condiciones de cada medición.
+### Requisitos no funcionales: valores declarados y resultados
+
+Los siguientes son **objetivos declarados para la demostración**, no resultados comprobados todavía. Reemplaza «Pendiente» por datos **realmente medidos**, o declara explícitamente que no se logró verificar alguno.
+
+| Atributo | Objetivo declarado | Resultado medido | Evidencia / procedimiento |
+| --- | --- | --- | --- |
+| Estabilidad | ≥ 10 min sin reinicios ni bloqueos | **Pendiente** | Registrar hora inicial y final; vigilar monitor serial, publicaciones y respuesta del servo. |
+| Exactitud de distancia | Error absoluto ≤ 3 cm, en rango 10–100 cm | **Pendiente** | Comparar lectura MQTT con cinta métrica en 20, 50 y 80 cm; anotar máximo error observado. |
+| Tiempo de respuesta desde la app | ≤ 1 s hasta que el actuador refleja el comando | **Pendiente** | Medir desde el envío en IoT MQTT Panel hasta el inicio del movimiento, preferentemente con video; declarar cómo se midió. |
+| Frecuencia de publicación | ≥ 2 mensajes de distancia válidos/s | **Pendiente** | Contar publicaciones MQTT durante 30 segundos y dividir el total entre 30; informar si hubo lecturas inválidas. |
+| Reconexión | Automática después de pérdida de WiFi y MQTT | **Pendiente** | Desconectar WiFi o broker y restaurar conexión; anotar recuperación sin intervención manual y tiempo aproximado. |
+
+**Precisión:** la lógica intenta tomar una medición cada 500 ms, pero esto no demuestra por sí solo 2 publicaciones válidas por segundo. Las mediciones inválidas se descartan. Además, en movimientos posteriores al primero, el servo avanza en pasos de 1° con intervalos mínimos de 20 ms; no confundir el tiempo para empezar a moverse con el tiempo hasta llegar al ángulo objetivo.
+
+**Registro de la demostración:** fecha `29/10/2026`; integrantes participantes y dispositivo de medición: **pendientes de completar**.
 
 1. Verifica la configuración y las conexiones físicas.
 2. En PlatformIO ejecuta **Build**, conecta la placa y ejecuta **Upload**. Abre Serial Monitor a **115200 baudios**.
