@@ -49,6 +49,10 @@ El firmware reintenta las conexiones WiFi y MQTT y vuelve a suscribirse tras una
 
 En IoT MQTT Panel configura una conexión MQTT TCP a `broker.hivemq.com`, puerto `1883`, sin usuario ni contraseña, con un identificador de cliente distinto al del ESP32 y al del servidor MCP. Agrega un gauge suscrito a `sis234/grupo3/distancia/cm` y un slider de 0 a 180 que publique valores enteros en `sis234/grupo3/servo/cmd`, con QoS 0 y retain desactivado.
 
+El panel utilizado muestra la distancia del HC-SR04 mediante un gauge y permite solicitar una posición para el servomotor con el slider. En la captura se observa una lectura de 26,20 cm y el slider en 90°:
+
+![Panel de IoT MQTT con la distancia y el control del servomotor](IoTPanelMQTT.jpg)
+
 Para instalar el servidor Python y configurar Claude Desktop mediante stdio, sigue [mcp-server/README.md](mcp-server/README.md) y su ejemplo de configuración con rutas absolutas. Publicar un comando no confirma el movimiento físico.
 
 ### Herramientas MCP expuestas
@@ -69,17 +73,21 @@ Para instalar el servidor Python y configurar Claude Desktop mediante stdio, sig
 | RF5: control desde la app | Slider y movimiento del SG90 comprobados. |
 | RF6: consulta y control mediante IA y MCP | Comprobado: Claude consultó una distancia de 23,3 cm y controló el servo a 0° y 90° mediante el servidor MCP. |
 
+En una prueba, el monitor serial mostró la conexión WiFi, un primer intento MQTT fallido (`-4`) y una conexión exitosa en el siguiente intento. Después se solicitaron la suscripción al tópico del servo y varias publicaciones de distancia, entre ellas `16.3` y `25.9` cm. Este registro no incluye marcas de tiempo ni una medición física de referencia, por lo que no verifica la frecuencia, la estabilidad ni la exactitud.
+
+En Claude se consultó la distancia mediante `esp32-mqtt` y se obtuvo una lectura de 23,3 cm con una antigüedad de 0,3 segundos. También se enviaron comandos para mover el servo a 0° y 90°. La respuesta de la herramienta confirma el envío por MQTT; el movimiento debe comprobarse visualmente.
+
 ### Requisitos no funcionales: valores declarados y resultados
 
 Los siguientes son **objetivos declarados para la demostración**, no resultados comprobados todavía. Reemplaza «Pendiente» por datos **realmente medidos**, o declara explícitamente que no se logró verificar alguno.
 
 | Atributo | Objetivo declarado | Resultado medido | Evidencia / procedimiento |
 | --- | --- | --- | --- |
-| Estabilidad | ≥ 10 min sin reinicios ni bloqueos | **Pendiente** | Registrar hora inicial y final; vigilar monitor serial, publicaciones y respuesta del servo. |
+| Estabilidad | ≥ 10 min sin reinicios ni bloqueos | **Pendiente** | El monitor serial muestra publicaciones sucesivas; falta registrar su duración y verificar que no haya reinicios ni bloqueos. |
 | Exactitud de distancia | Error absoluto ≤ 3 cm, en rango 10–100 cm | **Pendiente** | Comparar lectura MQTT con cinta métrica en 20, 50 y 80 cm; anotar máximo error observado. |
 | Tiempo de respuesta desde la app | ≤ 1 s hasta que el actuador refleja el comando | **Pendiente** | Medir desde el envío en IoT MQTT Panel hasta el inicio del movimiento, preferentemente con video; declarar cómo se midió. |
-| Frecuencia de publicación | ≥ 2 mensajes de distancia válidos/s | **Pendiente** | Contar publicaciones MQTT durante 30 segundos y dividir el total entre 30; informar si hubo lecturas inválidas. |
-| Reconexión | Automática después de pérdida de WiFi y MQTT | **Pendiente** | Desconectar WiFi o broker y restaurar conexión; anotar recuperación sin intervención manual y tiempo aproximado. |
+| Frecuencia de publicación | ≥ 2 mensajes de distancia válidos/s | **Pendiente** | El registro contiene publicaciones sucesivas, pero no tiene marcas de tiempo. Contarlas durante 30 segundos y dividir el total entre 30; informar si hubo lecturas inválidas. |
+| Reconexión | Automática después de pérdida de WiFi y MQTT | **Pendiente** | Se observó un reintento MQTT exitoso tras un fallo inicial. Falta interrumpir y restaurar WiFi y MQTT después de estar conectados, y comprobar la recuperación sin intervención manual. |
 
 **Precisión:** la lógica intenta tomar una medición cada 500 ms, pero esto no demuestra por sí solo 2 publicaciones válidas por segundo. Las mediciones inválidas se descartan. Además, en movimientos posteriores al primero, el servo avanza en pasos de 1° con intervalos mínimos de 20 ms; no confundir el tiempo para empezar a moverse con el tiempo hasta llegar al ángulo objetivo.
 
